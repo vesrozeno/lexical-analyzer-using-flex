@@ -1,0 +1,8 @@
+int main(){
+    int abc;
+    abc = 24 + 32;
+    if(abc >10)
+        printf("hello");
+    else
+        printf("no hello");
+}
