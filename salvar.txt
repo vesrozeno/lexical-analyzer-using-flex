@@ -1,1 +1,0 @@
-[ \t\n]            { /* Ignorar espaços em branco e quebras de linha */ }
