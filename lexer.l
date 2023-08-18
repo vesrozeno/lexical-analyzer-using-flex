@@ -1,31 +1,55 @@
+NUMERO [0-9]+
+IDENTIFICADOR [a-zA-Z][a-zA-Z0-9_]*
+ESPACO [ ]+
+QUEBRA_DE_LINHA [\n]
+TAB [\t]+
+OPERADOR_ARITMETICO "+"|"-"|"*"|"/"|"%"|"++"|"--"
+OPERADOR_RELACIONAL "=="|"<"|">"|"<="|">="|"!="
+OPERADOR_LOGICO "&&"|"||"|"!"
+OPERADOR_ATRIBUICAO "="
+SIMBOLO "'"|":"|"("|")"|"{"|"}"|","|";"|"."|"'"|"&"|"["|"]"
+
 %{
 #include <stdio.h>
 %}
 
+%x COMMENT
+
+
 %%
 
+"/*" {BEGIN(COMMENT);}
+<COMMENT>"*/" { BEGIN(INITIAL); }
+<COMMENT>.|\n
 
-[a-zA-Z][a-zA-Z0-9_]*    { printf("NOME_VARIAVEL: %s\n", yytext); }
-[0-9]+               { printf("NUMERO: %s\n", yytext); }
-"+"                  { printf("OPERADOR_SOMA\n"); }
-"-"                  { printf("OPERADOR_SUBTRACAO\n"); }
-"*"                  { printf("OPERADOR_MULTIPLICACAO\n"); }
-"/"                  { printf("OPERADOR_DIVISAO\n"); }
-"="                  { printf("ATRIBUICAO\n"); }
-";"					 { printf("FINAL DE COMANDO: %s\n", yytext); }
-","				     { printf("SEPARADOR: %s\n", yytext); }
-"("					 { printf("ABRE PARENTESES: %s\n", yytext); }
-")"					 { printf("FECHA PARENTESES: %s\n", yytext); }
-"."					 { printf("BAGULHO DE SEPARAR DECIMAIS: %s\n", yytext); }
-[ \t\r""]			 { printf("ESPACO: %s\n", yytext); }
-[\n]            	 { /* Ignorar espaços em branco e quebras de linha */ }
+<COMMENT><<EOF>> {printf("\nERRO - COMENTÁRIO SEM FIM\n\n"); return 0;}
 
-.                    { printf("CARACTER_DESCONHECIDO: %s\n", yytext); }
+"//".*                                    { /* Ignorar comentários de linha */ }
 
+{IDENTIFICADOR}		{ printf("IDENTIFICADOR: %s\n", yytext); }
+{NUMERO}               { printf("NUMERO: %s\n", yytext); }
+{OPERADOR_ARITMETICO}  { printf("OPERADOR ARITMETICO: %s\n", yytext); }
+{OPERADOR_RELACIONAL}  { printf("OPERADOR RELACIONAL: %s\n", yytext); }
+{OPERADOR_LOGICO}		 { printf("OPERADOR LOGICO: %s\n", yytext); }
+{OPERADOR_ATRIBUICAO}	 { printf("OPERADOR ATRIBUICAO: %s\n", yytext); }
+{SIMBOLO}	 			 { printf("SIMBOLO: %s\n", yytext); }
+{TAB}			 	     { /* Ignorar tabs */}
+{ESPACO}			 	 { /* Ignorar espaços */ }
+{QUEBRA_DE_LINHA}      { /* Ignorar quebras de linha */ }
+
+"_"{IDENTIFICADOR}|{NUMERO}{IDENTIFICADOR}|"_"{NUMERO}{IDENTIFICADOR}|"_"{IDENTIFICADOR}|{NUMERO}"_"{IDENTIFICADOR} { printf("\nERRO - VARIAVEL NAO PERMITIDA: %s\n\n", yytext); }
+
+.                    { printf("\nERRO - CARACTER_DESCONHECIDO: %s\n\n", yytext); }
 
 %%
 
 int main() {
+    extern FILE *yyin, *yyout;
+
+    yyin = fopen("teste.txt", "r");
+
+    yyout = fopen("Output.txt", "w");
+    
     yylex();
     return 0;
 }

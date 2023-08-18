@@ -1,0 +1,17 @@
+int main(){
+    int abc;
+	int 1abc, _abc, _1abc;
+    abc = 24 + 32;
+    if(abc >10)
+        printf("hello");
+    else
+        printf("no hello");
+
+	//teste
+/*teste*/
+
+faaaaala
+((([[[}}}{{]]//
+/*hahah
+}
+
