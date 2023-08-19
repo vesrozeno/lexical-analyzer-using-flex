@@ -19,6 +19,7 @@ real[0-9]+"."?[0-9]+
 
 %}
 
+%option yylineno
 %x COMMENT
 
 
@@ -28,35 +29,43 @@ real[0-9]+"."?[0-9]+
 <COMMENT>"*/" { BEGIN(INITIAL); }
 <COMMENT>.|\n
 
-<COMMENT><<EOF>> {printf("\nERRO - COMENTÁRIO SEM FIM\n\n"); return 0;}
+<COMMENT><<EOF>> {fprintf(yyout, "\t(ERRO - COMENTARIO SEM FIM)\n");return 0;}
 
-"//".*                                    { /* Ignorar comentários de linha */ }
+"//".*                 { /* Ignorar comentários de linha */ }
 
-{IDENTIFICADOR}		{ printf("IDENTIFICADOR: %s\n", yytext); }
-{NUMERO}               { printf("NUMERO: %s\n", yytext); }
-{OPERADOR_ARITMETICO}  { printf("OPERADOR ARITMETICO: %s\n", yytext); }
-{OPERADOR_RELACIONAL}  { printf("OPERADOR RELACIONAL: %s\n", yytext); }
-{OPERADOR_LOGICO}		 { printf("OPERADOR LOGICO: %s\n", yytext); }
-{OPERADOR_ATRIBUICAO}	 { printf("OPERADOR ATRIBUICAO: %s\n", yytext); }
-{SIMBOLO}	 			 { printf("SIMBOLO: %s\n", yytext); }
+{IDENTIFICADOR}		   {fprintf(yyout, "(linha: %d, IDENTIFICADOR: %s)\n", yylineno, yytext); }
+{NUMERO}               {fprintf(yyout, "(linha: %d, NUMERO: %s)\n", yylineno, yytext); }
+{OPERADOR_ARITMETICO}  {fprintf(yyout, "(linha: %d, OP. ARITMETICO: %s)\n", yylineno, yytext); }
+{OPERADOR_RELACIONAL}  {fprintf(yyout, "(linha: %d, OP. RELACIONAL: %s)\n", yylineno, yytext); }
+{OPERADOR_LOGICO}	   {fprintf(yyout, "(linha: %d, OP. LOGICO: %s)\n", yylineno, yytext); }
+{OPERADOR_ATRIBUICAO}  {fprintf(yyout, "(linha: %d, OP. ATRIBUICAO: %s)\n", yylineno, yytext); }
+{SIMBOLO}	 		   {fprintf(yyout, "(linha: %d, SIMBOLO: %s)\n", yylineno, yytext); }
 {TAB}			 	     { /* Ignorar tabs */}
 {ESPACO}			 	 { /* Ignorar espaços */ }
 {QUEBRA_DE_LINHA}      { /* Ignorar quebras de linha */ }
 
-"_"{IDENTIFICADOR}|{NUMERO}{IDENTIFICADOR}|"_"{NUMERO}{IDENTIFICADOR}|"_"{IDENTIFICADOR}|{NUMERO}"_"{IDENTIFICADOR} { printf("\nERRO - VARIAVEL NAO PERMITIDA: %s\n\n", yytext); }
+"_"{IDENTIFICADOR}|{NUMERO}{IDENTIFICADOR}|"_"{NUMERO}{IDENTIFICADOR}|"_"{IDENTIFICADOR}|{NUMERO}"_"{IDENTIFICADOR} {fprintf(yyout, "\t(linha: %d, ERRO - IDENTIFICADOR INVALIDO: %s)\n", yylineno, yytext); }
 
-.                    { printf("\nERRO - CARACTER_DESCONHECIDO: %s\n\n", yytext); }
+.                    {fprintf(yyout, "\t(linha: %d, ERRO - CARACTER DESONHECIDO: %s)\n", yylineno, yytext); }
 
 %%
 
-int main(){
 
-    extern FILE *yyin, *yyout;
-
-    yyin = fopen("teste.txt", "r");
-
-    yyout = fopen("Output.txt", "w");
-    
+int main(int argc, char *argv[])
+{
+	extern FILE *yyin, *yyout;
+	
+    FILE *arquivo = fopen(argv[1],"r");
+	
+    if(!arquivo){ 
+        printf("\nArquivo nao existe.\n");
+        return -1; 
+    }
+    yyin = arquivo;
+	
+    yyout = fopen("output.txt","w");
+	
     yylex();
+	printf("\nArquivo de analise lexica 'output.txt' criado!\n\n\tSaindo . .  .\n\n");
     return 0;
 }
