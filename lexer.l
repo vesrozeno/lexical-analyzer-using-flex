@@ -3,6 +3,7 @@ IDENTIFICADOR [a-zA-Z][a-zA-Z0-9_]*
 ESPACO [ ]+
 QUEBRA_DE_LINHA [\n]
 TAB [\t]+
+CARRIAGE_RETURN [ \t\r]
 OPERADOR_ARITMETICO "+"|"-"|"*"|"/"|"%"|"++"|"--"
 OPERADOR_RELACIONAL "=="|"<"|">"|"<="|">="|"!="
 OPERADOR_LOGICO "&&"|"||"|"!"
@@ -43,6 +44,7 @@ real[0-9]+"."?[0-9]+
 {TAB}			 	   { /* Ignorar tabs */}
 {ESPACO}			   { /* Ignorar espaços */ }
 {QUEBRA_DE_LINHA}      { /* Ignorar quebras de linha */ }
+{CARRIAGE_RETURN}        {/*Ignorar*/}
 
 "_"{IDENTIFICADOR}|{NUMERO}{IDENTIFICADOR}|"_"{NUMERO}{IDENTIFICADOR}|"_"{IDENTIFICADOR}|{NUMERO}"_"{IDENTIFICADOR} {fprintf(yyout, "\t(linha: %d, ERRO - IDENTIFICADOR INVALIDO: %s)\n", yylineno, yytext); }
 
