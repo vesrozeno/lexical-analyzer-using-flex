@@ -1,16 +1,21 @@
-int main(){
+int main()
+{
     int abc;
-	int 1abc, _abc, _1abc;
+	int 1abc, _abc, _1abc; //variáveis inválidas
     abc = 24 + 32;
     if(abc >10)
         printf("hello");
     else
         printf("no hello");
 
-	//teste
-/*teste*/
-
-faaaaala
-((([[[}}}{{]]//
-/*hahah
+	//teste comentário linha
+	/*teste 
+	comentário 
+	bloco*/
+	
+	((([[[}}}{{]]//teste de tokens seguidos
+	
+	@@@@ //teste caracter desconhecido
+	
+	/* teste - comentário sem fim (Erro)
 }

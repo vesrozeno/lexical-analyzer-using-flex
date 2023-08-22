@@ -1916,7 +1916,7 @@ int main(int argc, char *argv[])
     FILE *arquivo = fopen(argv[1],"r");
 	
     if(!arquivo){ 
-        printf("\nArquivo nao existe.\n");
+        printf("\nArquivo nao existe.\nInsira o arquivo como parametro na execucao!\n");
         return -1; 
     }
     yyin = arquivo;
