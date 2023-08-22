@@ -40,11 +40,11 @@ SIMBOLO "\""|"'"|":"|"("|")"|"{"|"}"|","|";"|"."|"'"|"&"|"["|"]"
 {TAB}			 	   { /* Ignorar tabs */}
 {ESPACO}			   { /* Ignorar espaços */ }
 {QUEBRA_DE_LINHA}      { /* Ignorar quebras de linha */ }
-{CARRIAGE_RETURN}        {/*Ignorar*/}
+{CARRIAGE_RETURN}      {/*Ignorar*/}
 
 "_"{IDENTIFICADOR}|{NUMERO}{IDENTIFICADOR}|"_"{NUMERO}{IDENTIFICADOR}|"_"{IDENTIFICADOR}|{NUMERO}"_"{IDENTIFICADOR} {fprintf(yyout, "\t(linha: %d, ERRO - IDENTIFICADOR INVALIDO: %s)\n", yylineno, yytext); }
 
-.                      {fprintf(yyout, "\t(linha: %d, ERRO - CARACTER DESONHECIDO: %s)\n", yylineno, yytext); }
+.                      {fprintf(yyout, "\t(linha: %d, ERRO - CARACTER DESCONHECIDO: %s)\n", yylineno, yytext); }
 
 %%
 

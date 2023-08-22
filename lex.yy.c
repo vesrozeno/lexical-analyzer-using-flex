@@ -889,7 +889,7 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 47 "lexer.l"
-{fprintf(yyout, "\t(linha: %d, ERRO - CARACTER DESONHECIDO: %s)\n", yylineno, yytext); }
+{fprintf(yyout, "\t(linha: %d, ERRO - CARACTER DESCONHECIDO: %s)\n", yylineno, yytext); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
