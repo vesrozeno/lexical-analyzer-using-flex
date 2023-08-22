@@ -10,10 +10,6 @@ OPERADOR_LOGICO "&&"|"||"|"!"
 OPERADOR_ATRIBUICAO "="
 SIMBOLO "\""|"'"|":"|"("|")"|"{"|"}"|","|";"|"."|"'"|"&"|"["|"]"
 
-ID[a-zA-Z][a-zA-Z0-9_]*
-int[0-9]+
-real[0-9]+"."?[0-9]+
-
 %option noyywrap
 %{
     #include <stdio.h>
